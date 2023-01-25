@@ -1,16 +1,35 @@
 from NodeCounter import NodeCounter
+import NodeAnalyzer
+import utils
+import NodeMoves
+import NodeUtils
 
 class Node:
-    def __init__(self, actualState:list, _parent = None):
-        self._index = NodeCounter().getCounter()
-        self._name = NodeCounter().getNextNodeName()
-        self._actualState = actualState[:]
-        
+
+    def __init__(self, actualState:list, goalState:list, _parent = None, moveToThisNode:NodeMoves = None):
+        self._index:int = NodeCounter().getCounter()
+        self._name:str = NodeCounter().getNextNodeName()
+        self._actualState:list = actualState[:]
+        self._goalState:list = goalState[:]
+        self._moveToThisNode:NodeMoves.NodeMoves = moveToThisNode
+        self._childs:Node = None
+
         self._parent:Node = _parent
         if self._parent is not None:
-            self._parent.addChild(self)
+            if not isinstance(self._parent, Node):
+                raise TypeError("parent must be a Node instance")
+            if moveToThisNode is None:
+                raise ValueError("moveToThisNode can't be None")
+            self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState, moveToThisNode)
+        else:
+            self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState)
         
-        self._childs:Node = None
+        # Check for no generation of all childs of Parent
+        # Moddify Creation of Children to be done outside __init__
+        if self.isCurrentStateGoal(): 
+            NodeUtils.printActionTrace(self)
+        else:
+            self._nodeAnalyzer.addChilds()
     
     def getIndex(self):
         return self._index
@@ -43,11 +62,9 @@ class Node:
     def getParentStrRepresentation(self):
         if self._parent is None:
             return "None"
-        parentStringRepresentation = str(self._parent)
+        parentStringRepresentation = self._parent.getSimpleStrRepresentation()
         parentStringRepresentation = parentStringRepresentation.split("\n")
-        for i in range(len(parentStringRepresentation)):
-            parentStringRepresentation[i] = "\t"+parentStringRepresentation[i]
-        parentStringRepresentation = "\n".join(parentStringRepresentation)
+        parentStringRepresentation = "\n\t".join(parentStringRepresentation)
         return parentStringRepresentation
     
     def getChildsStrRepresentation(self):
@@ -55,29 +72,31 @@ class Node:
             return "None"
         childsStringRepresentation = ""
         for child in self._childs:
-            childStringRepresentation = str(child)
+            childStringRepresentation = child.getSimpleStrRepresentation()
             childStringRepresentation = childStringRepresentation.split("\n")
-            for i in range(len(childStringRepresentation)):
-                childStringRepresentation[i] = "\t"+childStringRepresentation[i]
-            childStringRepresentation = "\n".join(childStringRepresentation)
+            childStringRepresentation = "\n\t".join(childStringRepresentation)
             childsStringRepresentation += childStringRepresentation
         return childsStringRepresentation
 
-    def __str__(self) -> str:
-        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+str(self._actualState)+"\n  Parent: "+self.getRelativeStrRepresentation(parent=True)+"\n  Childs: "+self.getRelativeStrRepresentation(childs=True)+"\n]"
+    def isCurrentStateGoal(self):
+        return self._actualState == self._goalState
+
+    def getSimpleStrRepresentation(self):
+        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n]"
     
+    def __str__(self) -> str:
+        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n  Parent: "+self.getRelativeStrRepresentation(parent=True)+"\n  Node Analyzer:"+str(self._nodeAnalyzer)+"\n  Childs: "+self.getRelativeStrRepresentation(childs=True)+"\n]"
 
-
-def main():
+def test():
     node = Node("A")
     print(node)
     node1 = Node("B")
     print(node1)
-    node2 = Node("C")
+    node2 = Node("C", node)
     print(node2)
-    # node3 = Node("D", node)
-    # print(node3)
-    # print(node3.getParent())
+    node3 = Node("D", node)
+    print(node3)
+    print(node3.getParent())
 
 if __name__ == "__main__":
-    main()
+    test()

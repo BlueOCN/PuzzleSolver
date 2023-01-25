@@ -29,13 +29,17 @@ class NodeCounter(metaclass=SingletonMeta):
 
 
 def test():
-    nodeCounter = NodeCounter()
-    nodeCounter.incrementCounter()
-    nodeCounter.incrementCounter()
-    nodeCounter.incrementCounter()
-    print(nodeCounter.getCounter())
     nodeCounter1 = NodeCounter()
+    nodeCounter1.incrementCounter()
+    nodeCounter1.incrementCounter()
+    nodeCounter1.incrementCounter()
+    nodeCounter2 = NodeCounter()
+    nodeCounter2.incrementCounter()
+    nodeCounter3 = NodeCounter()
+    nodeCounter3.incrementCounter()
+    nodeCounter3.incrementCounter()
     print(nodeCounter1.getCounter())
+    print(nodeCounter2.getCounter())
 
 if __name__ == "__main__":
     test()

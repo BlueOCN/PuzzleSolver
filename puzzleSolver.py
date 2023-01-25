@@ -1,12 +1,13 @@
-from utils import *
+import utils
+from Node import Node
 
 def main():
-    initial_state, goal_state = readFile("Datos.txt")
-    printPuzzle(initial_state)
-    E1 = moveDown(initial_state)
-    printPuzzle(E1)
-    E2 = moveUp(E1)
-    printPuzzle(E2)
+    initial_state, goal_state = utils.readFile("Datos.txt")
+    utils.printPuzzle(initial_state)
+    E1 = utils.moveDown(initial_state)
+    utils.printPuzzle(E1)
+    E2 = utils.moveUp(E1)
+    utils.printPuzzle(E2)
     # bestFirstSearch(initial_state,goal_state)
 
     # ----
