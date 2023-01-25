@@ -28,8 +28,7 @@ class Node:
         # Moddify Creation of Children to be done outside __init__
         if self.isCurrentStateGoal(): 
             NodeUtils.printActionTrace(self)
-        else:
-            self._nodeAnalyzer.addChilds()
+            NodeUtils.printNodeTrace(self)
     
     def getIndex(self):
         return self._index

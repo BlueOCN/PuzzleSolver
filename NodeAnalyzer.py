@@ -61,7 +61,7 @@ class NodeAnalyzer:
             return False
         return True
 
-    def addChilds(self):
+    def addChilds(self) -> bool:
         for movement in self._possibleMovements:
             if movement == NodeMoves.LEFT:
                 childNode = Node.Node(utils.moveLeft(self._node.getActualState()), self._goalState, self._node, NodeMoves.LEFT)
@@ -75,6 +75,9 @@ class NodeAnalyzer:
             elif movement == NodeMoves.DOWN:
                 childNode = Node.Node(utils.moveDown(self._node.getActualState()), self._goalState, self._node, NodeMoves.DOWN)
                 self._node.addChild(childNode)
+        if len(self._node.getChilds()) == 0:
+            return False
+        return True
                 
 
     def getPossibleMovements(self):

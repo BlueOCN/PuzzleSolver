@@ -1,5 +1,18 @@
-def printActionTrace(node, path = []):
-    if node._parent == None:
-        return
-    printActionTrace(node._parent, path.append(node._parentMoveToThisNode))
-    print(path.reverse())
+def printActionTrace(node, path = list()) -> list:
+    if node._parent is None:
+        return path
+    path.append(node._moveToThisNode)
+    path = printActionTrace(node._parent, path)
+    if path is not None:
+        path.reverse()
+        print("Solution Path: "+str(path))
+
+def printNodeTrace(node, path = list()) -> list:
+    if node._parent is None:
+        path.append(node._name)
+        return path
+    path.append(node._name)
+    path = printNodeTrace(node._parent, path)
+    if path is not None:
+        path.reverse()
+        print("Solution Path: "+str(path))
