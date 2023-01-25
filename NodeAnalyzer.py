@@ -78,7 +78,9 @@ class NodeAnalyzer:
         if len(self._node.getChilds()) == 0:
             return False
         return True
-                
+    
+    def getHeuristicValue(self) -> int:
+        return utils.getHeuristicValue(self._node.getActualState(), self._goalState)
 
     def getPossibleMovements(self):
         return self._possibleMovements[:]

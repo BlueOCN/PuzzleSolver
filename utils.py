@@ -233,9 +233,13 @@ def getBestPath(closed: list) -> tuple[list, list]:
     pass
 
 
-def getHeuristicValue(child) -> int:
-    '''Assign the child a heuristic value'''
-    pass
+def getHeuristicValue(actualstate:list, goalState:list) -> int:
+    '''Returns the heuristic value of a given state'''
+    acum = 0
+    for i in range(0, len(actualstate)):
+        if actualstate[i] == goalState[i]:
+            acum += 1
+    return acum
 
 
 def generateChildren(node: list) -> list:

@@ -24,11 +24,17 @@ class Node:
         else:
             self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState)
         
-        # Check for no generation of all childs of Parent
-        # Moddify Creation of Children to be done outside __init__
         if self.isCurrentStateGoal(): 
             NodeUtils.printActionTrace(self)
             NodeUtils.printNodeTrace(self)
+
+        if self._parent is not None:
+            self._gN = self._parent._gN + 1
+        else:
+            self._gN = 0
+        
+        self._hN = self._nodeAnalyzer.getHeuristicValue()
+        self._fN = self._gN + self._hN
     
     def getIndex(self):
         return self._index
@@ -84,7 +90,7 @@ class Node:
         return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n]"
     
     def __str__(self) -> str:
-        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n  Parent: "+self.getRelativeStrRepresentation(parent=True)+"\n  Node Analyzer:"+str(self._nodeAnalyzer)+"\n  Childs: "+self.getRelativeStrRepresentation(childs=True)+"\n]"
+        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  g(n): "+str(self._gN)+"\n  h(n): "+str(self._hN)+"\n  f(n): "+str(self._fN)+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n  Parent: "+self.getRelativeStrRepresentation(parent=True)+"\n  Node Analyzer:"+str(self._nodeAnalyzer)+"\n  Childs: "+self.getRelativeStrRepresentation(childs=True)+"\n]"
 
 def test():
     node = Node("A")
