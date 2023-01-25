@@ -227,6 +227,28 @@ def getPuzzleStringRepresentation(state: list) -> str:
 
 #################################################################
 
+def computeG(node):
+    '''Number of movements done since the initial state.'''
+    # Add to Node a level atribute
+    # return node._level
+    return 0
+
+def computeH(state: list, goal_state)->int:
+    '''Number of misplaced cells.'''
+    g = PUZZLE_SIZE**2
+    for index, number in enumerate(state):
+        if number == goal_state[index]:
+            g -= 1
+    if debbug:
+        print("g(n):",g)
+    return g
+
+def computeF(state: list, goal_state)->int:
+    '''Node value'''
+    if debbug:
+        print("f(n):",computeH()+computeG(state, goal_state))
+    return computeH(state, goal_state)+computeG(state)
+
 
 def getBestPath(closed: list) -> tuple[list, list]:
     '''Returns the best path based on the closed states.'''

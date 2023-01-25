@@ -10,6 +10,11 @@ def main():
     utils.printPuzzle(E2)
     # bestFirstSearch(initial_state,goal_state)
 
+    # g(n) h(n) f(n)
+    print(utils.computeG(initial_state))
+    print(utils.computeH(initial_state, goal_state))
+    print(utils.computeF(initial_state, goal_state))
+
     # ----
     # initial_state, goal_state = readFile("Datos.txt")
     # E0 = state(initial_state)
