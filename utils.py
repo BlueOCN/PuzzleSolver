@@ -1,7 +1,7 @@
 import copy
 
 PUZZLE_SIZE = 4
-debbug = 1
+debbug = 0
 
 
 def readFile(path: str) -> tuple[list, list]:
@@ -216,6 +216,14 @@ def printPuzzle(state: list) -> None:
     print("\t{a}\t{b}\t{c}\t{d}".format(
         a=state[12], b=state[13], c=state[14], d=state[15]))
     print()
+
+def getPuzzleStringRepresentation(state: list) -> str:
+    '''Regresa una cadena con el estado del puzzle'''
+    return "\n\t{a}\t{b}\t{c}\t{d}\n\t{e}\t{f}\t{g}\t{h}\n\t{i}\t{j}\t{k}\t{l}\n\t{m}\t{n}\t{o}\t{p}".format(
+        a=state[0], b=state[1], c=state[2], d=state[3],
+        e=state[4], f=state[5], g=state[6], h=state[7],
+        i=state[8], j=state[9], k=state[10], l=state[11],
+        m=state[12], n=state[13], o=state[14], p=state[15])
 
 #################################################################
 
