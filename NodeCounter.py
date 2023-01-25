@@ -28,7 +28,7 @@ class NodeCounter(metaclass=SingletonMeta):
         self.counter = 0
 
 
-def main():
+def test():
     nodeCounter = NodeCounter()
     nodeCounter.incrementCounter()
     nodeCounter.incrementCounter()
@@ -38,4 +38,4 @@ def main():
     print(nodeCounter1.getCounter())
 
 if __name__ == "__main__":
-    main()
+    test()
