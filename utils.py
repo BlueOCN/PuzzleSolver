@@ -1,6 +1,6 @@
 import copy
 
-PUZZLE_SIZE = 4
+PUZZLE_SIZE = 5
 debbug = 0
 
 

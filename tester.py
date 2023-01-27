@@ -7,9 +7,9 @@ from time import time
 def lol():
     # initialState = [1,2,4,7,11,6,12,3,5,10,14,8,0,9,13,15]
     # goalState = [1,2,4,7,11,6,12,3,5,10,14,0,9,13,15,8]
-    initialState, goalState = utils.readFile("Datos.txt")
-    utils.printPuzzle(initialState)
-    utils.printPuzzle(goalState)
+    initialState, goalState = utils.readFile("Datos1.txt")
+    # utils.printPuzzle(initialState)
+    # utils.printPuzzle(goalState)
     node1 = Node.Node(initialState, goalState, AlgorithmKey.MIN)
     startingTime = time()
     try:
