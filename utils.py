@@ -23,6 +23,8 @@ def readFile(path: str) -> tuple[list, list]:
         print(goal_state, len(goal_state))
         print()
 
+    # fh.close()
+
     return initial_state, goal_state
 
 

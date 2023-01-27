@@ -42,7 +42,8 @@ class Node:
         if self.isCurrentStateGoal(): 
             NodeUtils.printActionTrace(self)
             NodeUtils.printNodeTrace(self)
-            quit()
+            #quit()
+            raise ValueError("Goal State Reached")
 
         NodeUtils.NodeUtils().addNode(self)
         NodeUtils.NodeUtils().sortList()
