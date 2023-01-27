@@ -1,3 +1,4 @@
+from AlgorithmKey import AlgorithmKey
 from NodeCounter import NodeCounter
 import NodeAnalyzer
 import utils
@@ -6,11 +7,15 @@ import NodeUtils
 
 class Node:
 
-    def __init__(self, actualState:list, goalState:list, _parent = None, moveToThisNode:NodeMoves = None):
+    algorithmMin = lambda x, y: True if x <= y else False
+    algorithmMax = lambda x, y: True if x >= y else False
+
+    def __init__(self, actualState:list, goalState:list, algorithmKey:AlgorithmKey, _parent = None, moveToThisNode:NodeMoves = None):
         self._index:int = NodeCounter().getCounter()
         self._name:str = NodeCounter().getNextNodeName()
         self._actualState:list = actualState[:]
         self._goalState:list = goalState[:]
+        self._algorithmKey:AlgorithmKey = algorithmKey
         self._moveToThisNode:NodeMoves.NodeMoves = moveToThisNode
         self._childs:Node = None
 
@@ -20,21 +25,62 @@ class Node:
                 raise TypeError("parent must be a Node instance")
             if moveToThisNode is None:
                 raise ValueError("moveToThisNode can't be None")
-            self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState, moveToThisNode)
-        else:
-            self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState)
-        
-        if self.isCurrentStateGoal(): 
-            NodeUtils.printActionTrace(self)
-            NodeUtils.printNodeTrace(self)
+        self._nodeAnalyzer = NodeAnalyzer.NodeAnalyzer(self, goalState, moveToThisNode)
 
         if self._parent is not None:
-            self._gN = self._parent._gN + 1
+            if algorithmKey == AlgorithmKey.MIN:
+                self._gN = self._parent._gN + 1
+            elif algorithmKey == AlgorithmKey.MAX:
+                self._gN = self._parent._gN - 1
         else:
             self._gN = 0
         
         self._hN = self._nodeAnalyzer.getHeuristicValue()
         self._fN = self._gN + self._hN
+
+        
+        if self.isCurrentStateGoal(): 
+            NodeUtils.printActionTrace(self)
+            NodeUtils.printNodeTrace(self)
+            quit()
+
+        NodeUtils.NodeUtils().addNode(self)
+        NodeUtils.NodeUtils().sortList()
+        
+        
+    def whoRuns(self):
+        nodeReachingBefore = self.isReachedByShorterPath()
+        if nodeReachingBefore is not None:
+            nodeReachingBefore.run()
+        else:
+            self.run()
+        
+
+
+    def isReachedByShorterPath(self) -> bool:
+        return NodeUtils.NodeUtils().nodeExists(self)
+
+    def run(self):
+        self._nodeAnalyzer.addChilds()
+        for child in self._childs:
+            if self._algorithmKey == AlgorithmKey.MIN:
+                if Node.algorithmMin(child._fN, self._fN):
+                    child.whoRuns()
+            elif self._algorithmKey == AlgorithmKey.MAX:
+                if Node.algorithmMax(child._fN, self._fN):
+                    child.whoRuns()
+        NodeUtils.NodeUtils().removeNode(self)
+        NodeUtils.NodeUtils().sortList()
+        nodeList = NodeUtils.NodeUtils().getList()
+        if self._parent is None:
+            while len(nodeList) > 0:
+                nodeList.pop().run()
+                nodeList = NodeUtils.NodeUtils().getList()
+        #print("Node: " + self._name + " finished")
+
+        
+
+                
     
     def getIndex(self):
         return self._index
@@ -88,6 +134,9 @@ class Node:
 
     def getSimpleStrRepresentation(self):
         return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n]"
+    
+    def getStrRepresentation(self):
+        return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  g(n): "+str(self._gN)+"\n  h(n): "+str(self._hN)+"\n  f(n): "+str(self._fN)+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n]"
     
     def __str__(self) -> str:
         return "[\n  Node Class\n  Index: "+str(self._index)+"\n  Name: "+self._name+"\n  g(n): "+str(self._gN)+"\n  h(n): "+str(self._hN)+"\n  f(n): "+str(self._fN)+"\n  Actual State: "+utils.getPuzzleStringRepresentation(self._actualState)+"\n  Parent: "+self.getRelativeStrRepresentation(parent=True)+"\n  Node Analyzer:"+str(self._nodeAnalyzer)+"\n  Childs: "+self.getRelativeStrRepresentation(childs=True)+"\n]"

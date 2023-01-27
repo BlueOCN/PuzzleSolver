@@ -1,10 +1,11 @@
 import Node
 import utils
 from NodeMoves import NodeMoves
+from AlgorithmKey import AlgorithmKey
 
 class NodeAnalyzer:
 
-    def __init__(self, node, goalState, parentMoveToThisNode=None) -> None:
+    def __init__(self, node, goalState:list, parentMoveToThisNode=None) -> None:
         if not isinstance(node, Node.Node):
             raise TypeError("node must be a Node instance")
         if node is None:
@@ -15,6 +16,7 @@ class NodeAnalyzer:
         self._node: Node.Node = node
         self._goalState: list = goalState[:]
         self._parentMoveToThisNode: NodeMoves = parentMoveToThisNode
+
         self._possibleMovements: list = []
         self.analyzePossibleMovements()
 
@@ -63,24 +65,25 @@ class NodeAnalyzer:
 
     def addChilds(self) -> bool:
         for movement in self._possibleMovements:
+            childNode = None
             if movement == NodeMoves.LEFT:
-                childNode = Node.Node(utils.moveLeft(self._node.getActualState()), self._goalState, self._node, NodeMoves.LEFT)
-                self._node.addChild(childNode)
+                childNode = Node.Node(utils.moveLeft(self._node.getActualState()), self._goalState, self._node._algorithmKey, self._node, NodeMoves.LEFT)
             elif movement == NodeMoves.RIGHT:
-                childNode = Node.Node(utils.moveRight(self._node.getActualState()), self._goalState, self._node, NodeMoves.RIGHT)
-                self._node.addChild(childNode)
+                childNode = Node.Node(utils.moveRight(self._node.getActualState()), self._goalState, self._node._algorithmKey, self._node, NodeMoves.RIGHT)
             elif movement == NodeMoves.UP:
-                childNode = Node.Node(utils.moveUp(self._node.getActualState()), self._goalState, self._node, NodeMoves.UP)
-                self._node.addChild(childNode)
+                childNode = Node.Node(utils.moveUp(self._node.getActualState()), self._goalState, self._node._algorithmKey, self._node, NodeMoves.UP)
             elif movement == NodeMoves.DOWN:
-                childNode = Node.Node(utils.moveDown(self._node.getActualState()), self._goalState, self._node, NodeMoves.DOWN)
-                self._node.addChild(childNode)
+                childNode = Node.Node(utils.moveDown(self._node.getActualState()), self._goalState, self._node._algorithmKey, self._node, NodeMoves.DOWN)
+            self._node.addChild(childNode)
+
         if len(self._node.getChilds()) == 0:
             return False
         return True
     
     def getHeuristicValue(self) -> int:
-        return utils.getHeuristicValue(self._node.getActualState(), self._goalState)
+        if self._node._algorithmKey == AlgorithmKey.MAX:
+            return utils.getHeuristicValue(self._node.getActualState(), self._goalState)
+        return utils.computeH(self._node.getActualState(), self._goalState)
 
     def getPossibleMovements(self):
         return self._possibleMovements[:]

@@ -1,5 +1,5 @@
 import utils
-from Node import Node
+from Node import Node 
 
 def main():
     initial_state, goal_state = utils.readFile("Datos.txt")

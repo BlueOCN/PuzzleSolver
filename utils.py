@@ -69,7 +69,7 @@ def moveLeft(state: list) -> list:
     if getCoordinate(space_index)[1] > 0:
         number_index = getIndex(getCoordinate(space_index-1))
         # Almacenar el número en el indice correspondiente al cero
-        next_state = copy.deepcopy(state)
+        next_state = state[:]
         next_state[space_index] = next_state[number_index]
         # Almacenar un cero en el índice correspondiente al número a la izquierda del cero
         next_state[number_index] = 0
@@ -107,7 +107,7 @@ def moveRight(state: list) -> list:
     if getCoordinate(space_index)[1] < PUZZLE_SIZE-1:
         number_index = getIndex(getCoordinate(space_index+1))
         # Almacenar el número en el indice correspondiente al cero
-        next_state = copy.deepcopy(state)
+        next_state = state[:]
         next_state[space_index] = next_state[number_index]
         # Almacenar un cero en el índice correspondiente al número a la izquierda del cero
         next_state[number_index] = 0
@@ -145,7 +145,7 @@ def moveUp(state: list) -> list:
     if getCoordinate(space_index)[0] > 0:
         number_index = getIndex(getCoordinate(space_index-4))
         # Almacenar el número en el indice correspondiente al cero
-        next_state = copy.deepcopy(state)
+        next_state = state[:]
         next_state[space_index] = next_state[number_index]
         # Almacenar un cero en el índice correspondiente al número a la izquierda del cero
         next_state[number_index] = 0
@@ -183,7 +183,7 @@ def moveDown(state: list) -> list:
     if getCoordinate(space_index)[0] < PUZZLE_SIZE-1:
         number_index = getIndex(getCoordinate(space_index+4))
         # Almacenar el número en el indice correspondiente al cero
-        next_state = copy.deepcopy(state)
+        next_state = state[:]
         next_state[space_index] = next_state[number_index]
         # Almacenar un cero en el índice correspondiente al número a la izquierda del cero
         next_state[number_index] = 0
