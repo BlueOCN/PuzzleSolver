@@ -425,3 +425,31 @@ def bestFirstSearch(start, goal) -> tuple[list, list]:
         #         open = reOrder(open)
 
     return None
+
+def compute_manhattan_distance1(node1: list, node2: list) -> float:
+    pos_n1 = getCoordinate(node1.index(0))
+    pos_n2 = getCoordinate(node2.index(0))
+    return manhattan_distance(pos_n1,pos_n2)
+
+def compute_manhattan_distance2(node1: list, node2: list)->float:
+    min = 0.0
+    for index, number in enumerate(node1):
+        p1 = getCoordinate(number)
+        p2 = getCoordinate(node2[index])
+        d = manhattan_distance(p1, p2)
+        if d > min:
+            min = d
+    return (PUZZLE_SIZE*PUZZLE_SIZE)-min
+
+
+def test():
+    initial_state, goal_state = readFile("Datos.txt")
+    printPuzzle(initial_state)
+    printPuzzle(goal_state)
+    # Remplaza g(n)
+    print(computeH(initial_state, goal_state), compute_manhattan_distance1(initial_state, goal_state))
+    # Remplaza h(n)     
+    print(computeH(initial_state, goal_state), compute_manhattan_distance2(initial_state, goal_state))
+
+if __name__ == "__main__":
+    test()
