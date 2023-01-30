@@ -229,6 +229,59 @@ def getPuzzleStringRepresentation(state: list) -> str:
 
 #################################################################
 
+def manhattan_distance(P1: tuple, P2: tuple) -> float:
+    '''The sum of the absolute differences of the Cartesian differences.
+    This distance is also known as city block distance, 
+    Manhattan distance, or Taxicab.'''
+    sum = 0
+    if (len(P1) != len(P2)):
+      print("Dimensions between P1{p1} and P2{p2} are not equal".format(p1=P1,p2=P2),end=" -> ")
+      return None
+    for i in range(len(P1)):
+        sum = sum+abs(P1[i]-P2[i])
+    return float(sum)
+
+def euclidian_distance(P1: tuple, P2: tuple) -> float:
+    '''The length of a line segment between the two points.
+    Associated with a norm called the Euclidean norm,
+    defined as the distance of each vector from the origin.'''
+    sum = 0
+    if (len(P1) != len(P2)):
+      print("Dimensions between P1{p1} and P2{p2} are not equal".format(p1=P1,p2=P2),end=" -> ")
+      return None
+    for i in range(len(P1)):
+        sum = sum+(P1[i]-P2[i])**2
+    return float(pow(sum,0.5))
+
+def cosine_distance(P1: tuple, P2: tuple) -> float:
+    '''The resulting similarity ranges from −1 meaning exactly opposite,
+    to 1 meaning exactly the same, with 0 indicating orthogonality
+    or decorrelation, while in-between values indicate intermediate similarity
+    or dissimilarity.'''
+    sumA = 0
+    sumB = 0
+    sumAB = 0
+    if (len(P1) != len(P2)):
+      print("Dimensions between P1{p1} and P2{p2} are not equal".format(p1=P1,p2=P2),end=" -> ")
+      return None
+    for i in range(len(P1)):
+        sumA = sumA + (P1[i]**2)
+        sumB = sumB + (P2[i]**2)
+        sumAB = sumAB + P1[i]*P2[i]
+    return float((sumAB)/((sumA**0.5)*(sumB**0.5)))
+
+def hamming_distance(P1: tuple, P2: tuple) -> float:
+    '''The Hamming Distance finds the sum of corresponding elements that differ between two vectors.
+    The greater the Hamming Distance is, the more the two vectors differ.
+    Inversely, the smaller the Hamming Distance, the more similar the two vectors are.'''
+    sum = 0
+    if (len(P1) != len(P2)):
+      print("Dimensions between P1{p1} and P2{p2} are not equal".format(p1=P1,p2=P2),end=" -> ")
+      return None
+    for i in range(len(P1)):
+        sum = sum + abs(P1[i]-P2[i])
+    return float(sum/len(P1))
+
 def computeG(node):
     '''Number of movements done since the initial state.'''
     # Add to Node a level atribute
