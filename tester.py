@@ -36,7 +36,24 @@ def lol():
 
     # for _,v in NodeUtils.NodeUtils().getDict().items():
     #     print(v.getStrRepresentation())
-    
+
+    #### Soluciones encontradas / Soluciones no encontradas
+    print("Test 10")
+    initialState, goalState = utils.readFile("Datos.txt")
+    times = list()
+    for solution in range(0,10):
+        utils.printPuzzle(utils.generate_random_state())
+        utils.printPuzzle(goalState)
+        node1 = Node.Node(initialState, goalState, AlgorithmKey.MIN)
+        startingTime = time()
+        try:
+            node1.run()
+        except ValueError as e:
+            print(e)
+            print("Time: " + str(time() - startingTime) + " seconds")
+            times.append(time() - startingTime)
+    print("End Test")
+            
 
 if __name__ == "__main__":
     lol()
