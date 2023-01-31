@@ -47,6 +47,10 @@ class NodeUtils(metaclass=SingletonMeta):
     def sortList(self):
         self._list.sort(key=lambda node: node._fN)
         self._list.reverse()
+    
+    def reset(self):
+        self._dict = dict()
+        self._list = list()
 
 def printActionTrace(node, path = list()) -> list:
     if node._parent is None:
