@@ -1,4 +1,4 @@
-import copy
+import random
 
 PUZZLE_SIZE = 4
 debbug = 0
@@ -441,15 +441,27 @@ def compute_manhattan_distance2(node1: list, node2: list)->float:
             min = d
     return (PUZZLE_SIZE*PUZZLE_SIZE)-min
 
+def generate_random_state()-> list:
+    '''Generates a random state.'''
+    state = list()
+    while True:
+        if len(state) == 16:
+            break
+        number = random.randint(0,15)
+        if state.count(number) == 0:
+            state.append(number)
+    return state
+
 
 def test():
     initial_state, goal_state = readFile("Datos.txt")
-    printPuzzle(initial_state)
-    printPuzzle(goal_state)
+    # printPuzzle(initial_state)
+    # printPuzzle(goal_state)
     # Remplaza g(n)
-    print(computeH(initial_state, goal_state), compute_manhattan_distance1(initial_state, goal_state))
+    # print(computeH(initial_state, goal_state), compute_manhattan_distance1(initial_state, goal_state))
     # Remplaza h(n)     
-    print(computeH(initial_state, goal_state), compute_manhattan_distance2(initial_state, goal_state))
+    # print(computeH(initial_state, goal_state), compute_manhattan_distance2(initial_state, goal_state))
+    print(generate_random_state())
 
 if __name__ == "__main__":
     test()
