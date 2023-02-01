@@ -42,8 +42,10 @@ class Node:
         if self.isCurrentStateGoal(): 
             NodeUtils.printActionTrace(self)
             NodeUtils.printNodeTrace(self)
-            #quit()
-            raise ValueError("Goal State Reached")
+            print("\n------- Goal State Reached -------\n")
+            NodeUtils.printMappedActionTrace(self)
+            quit()
+            # raise ValueError("Goal State Reached")
 
         NodeUtils.NodeUtils().addNode(self)
         NodeUtils.NodeUtils().sortList()
@@ -72,11 +74,11 @@ class Node:
                     child.whoRuns()
         NodeUtils.NodeUtils().removeNode(self)
         NodeUtils.NodeUtils().sortList()
-        nodeList = NodeUtils.NodeUtils().getList()
+        openNodeList = NodeUtils.NodeUtils().getOpenList()
         if self._parent is None:
-            while len(nodeList) > 0:
-                nodeList.pop().run()
-                nodeList = NodeUtils.NodeUtils().getList()
+            while len(openNodeList) > 0:
+                openNodeList.pop().run()
+                openNodeList = NodeUtils.NodeUtils().getOpenList()
         #print("Node: " + self._name + " finished")
 
         

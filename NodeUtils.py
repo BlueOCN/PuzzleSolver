@@ -1,4 +1,4 @@
-
+import NodeMoves
 
 class SingletonMeta(type):
     _instances = {}
@@ -12,18 +12,22 @@ class NodeUtils(metaclass=SingletonMeta):
 
     def __init__(self):
         self._dict = dict()
-        self._list = list()
+        self._listOpen = list()
+        self._listClosed = list()
     
     def addNode(self, node):
+        if self.nodeExists(node) is not None:
+            self._listClosed.remove(node)
         self._dict[node.getName()] = node
-        self._list.append(node)
+        self._listOpen.append(node)
 
     def addNodes(self, nodes:list):
         for node in nodes:
             self.addNode(node)
 
     def removeNode(self, node):
-        self._list = list(filter(lambda x: x._name != node._name, self._list))
+        self._listOpen = list(filter(lambda x: x._name != node._name, self._listOpen))
+        self._listClosed.append(node)
     
     def nodeExists(self, node):
         comparingNode = self.getNode(node.getName())
@@ -41,16 +45,47 @@ class NodeUtils(metaclass=SingletonMeta):
     def getDict(self):
         return self._dict
     
-    def getList(self):
-        return self._list
+    def getOpenList(self):
+        return self._listOpen[:]
+    
+    def getClosedList(self):
+        return self._listClosed[:]
     
     def sortList(self):
-        self._list.sort(key=lambda node: node._fN)
-        self._list.reverse()
+        self._listOpen.sort(key=lambda node: node._fN)
+        self._listOpen.reverse()
     
     def reset(self):
+        self._dict = self._dict.clear()
         self._dict = dict()
-        self._list = list()
+        self._listOpen = self._listOpen.clear()
+        self._listOpen = list()
+        self._listClosed = self._listClosed.clear()
+        self._listClosed = list()
+
+def getMappedAction(action):
+    if action == NodeMoves.NodeMoves.UP:
+        return "U"
+    elif action == NodeMoves.NodeMoves.DOWN:
+        return "D"
+    elif action == NodeMoves.NodeMoves.LEFT:
+        return "L"
+    elif action == NodeMoves.NodeMoves.RIGHT:
+        return "R"
+    else:
+        raise ValueError("Action is not valid!")
+
+def printMappedActionTrace(node, path = list()) -> list:
+    if node._parent is None:
+        return path
+    path.append(getMappedAction(node._moveToThisNode))
+    path = printMappedActionTrace(node._parent, path)
+    if path is not None:
+        path.reverse()
+        print("Solution:")
+        print(",".join(path))
+        print("\n")
+        
 
 def printActionTrace(node, path = list()) -> list:
     if node._parent is None:

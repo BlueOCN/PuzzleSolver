@@ -437,7 +437,7 @@ def compute_manhattan_distance2(node1: list, node2: list)->float:
         p1 = getCoordinate(number)
         p2 = getCoordinate(node2[index])
         d = manhattan_distance(p1, p2)
-        if d > min:
+        if d < min:
             min = d
     return (PUZZLE_SIZE*PUZZLE_SIZE)-min
 
